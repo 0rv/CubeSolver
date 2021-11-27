@@ -26,10 +26,17 @@ class Cube:
   
   def __str__(self):
     # sloppy implementation but it'll do
+    if not self.F:
+      return "nonecube %d"%(self.n)
     out = ("""\
-    {} {} {}   {} {} {}
- F  {} {} {} B {} {} {}
-    {} {} {}   {} {} {}""")
+    {} {} {}              {} {} {}
+ U  {} {} {}            D {} {} {}
+    {} {} {}              {} {} {}
+    {} {} {}   {} {} {}   {} {} {}   {} {} {}
+ F  {} {} {} R {} {} {} B {} {} {} L {} {} {}
+    {} {} {}   {} {} {}   {} {} {}   {} {} {}""").format(
+      
+    )
     return 
     
   def __init__(self, data, n=3, path=[]):
@@ -38,10 +45,26 @@ class Cube:
     # pass None to data for a solved cube
     
     self.n = n
-    if data=None:
+    if not data:
       # gives you a 3x3 of 1..6 (a solved cube of size n)
       data = [i * np.ones([n, n]) for i in range(1, 7)]
     for i, face in enumerate([self.F, self.B, self.L, self.R, self.U, self.D]):
       face = data[i]
-    
-  def debug
+      
+      
+      
+new = Cube(None)
+print(new)
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
