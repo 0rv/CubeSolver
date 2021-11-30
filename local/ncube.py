@@ -6,11 +6,9 @@
 import numpy as np
 # numpy arrays for column assignment
 
-class Cube:
+class nCube:
   # n = 0
   # dimensions of cube
-  path = []
-  # path to solution (if exists, to be passed to next search step instances)
   # 6 faces of cube, (F)ront (U)p (L)eft (B)ack (R)ight  (D)own
   
 
