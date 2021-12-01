@@ -6,9 +6,19 @@
 import numpy as np
 # numpy arrays for column assignment
 
-class nCube:
+
+
+# * * * IMPORTANT * * *
+
+# this is a legacy file, from an attempt to fit arbitrary nxn
+# cubes into a flat data structure (dict of 2d arrays)
+# this implementation DOES NOT WORK and will break with PDBs
+
+class Cube:
   # n = 0
   # dimensions of cube
+  path = []
+  # path to solution (if exists, to be passed to next search step instances)
   # 6 faces of cube, (F)ront (U)p (L)eft (B)ack (R)ight  (D)own
   
 
