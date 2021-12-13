@@ -58,13 +58,11 @@ class Cube:
     # dir indicates CW or CCW; 90 or -90deg (-1, 1)
     # print("transform on axis {} index {} dir {}".format(axis, index, dir))
     
-
     t = [
       (index),
       (slice(None), index),
       (slice(None), slice(None), index)
     ]
-    # tmp = np.rot90(self.data.take(index, axis), dir)
     self.data[t[axis]] = np.rot90(self.data.take(index, axis), dir)
     
     if (index == self.n):
@@ -75,7 +73,6 @@ class Cube:
         (slice(None), index),
         (slice(None), slice(None), index)
       ]
-      # tmp = np.rot90(self.data.take(index, axis), dir)
       self.data[t[axis]] = np.rot90(self.data.take(index, axis), dir)
       
     if (index == 1):
@@ -88,24 +85,15 @@ class Cube:
       ]
       # tmp = np.rot90(self.data.take(index, axis), dir)
       self.data[t[axis]] = np.rot90(self.data.take(index, axis), dir)
-      
-    #print(self.data[t[0]])
-    #print(self.data[t[1]])
-    #print(self.data[t[2]])
-    
-    #print(self.data[])
-    #print(self)
-    #print(np.rot90(self.data.take(index, axis), dir ))
-    # print(tmp)
-
   
-      
-  def data(self):
-    return self.data
 
-  def is_solved(self):
-    return True
-    
+  def solved(self):
+    flag = True
+    for x in [self.data[0], self.data[-1], self.data[:,0], self.data[:,-1], self.data[:,:,0], self.data[:,:,-1]]:
+      # for each outer face
+      flag = (len(np.unique(x))==2 and flag)
+    return flag
+  
 
   def draw3(self):
     # # # DISPLAY # # #

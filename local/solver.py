@@ -5,19 +5,13 @@ from cube import Cube
 # for in (list of cube moves) - (path(last)):
 # search new
 
-dcube = Cube(None, 3)
-
-dcube.transform(index=2, axis=0, dir=1)
-#print(dcube)
-dcube.transform(index=2, axis=1, dir=1)
-#print(dcube)
-dcube.transform(index=2, axis=2, dir=1)
-print(dcube)
+cube = Cube(None, 6)
 
 
+  
 
 
-dcube.draw3()
+#cube.draw3()
 
 
 
