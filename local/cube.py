@@ -121,6 +121,7 @@ class Cube:
     alpha = 0.9
     
     colours = [
+      [0, 0, 0, 0.0],
       [1, 1, 1, alpha],
       [1, .5, 0, alpha],
       [0, 1, 0, alpha],
@@ -129,26 +130,16 @@ class Cube:
       [0, 0, 1, alpha]
     ]
     
-    col = np.array([self.data, self.data, self.data, np.ones([self.n+2, self.n+2, self.n+2])])
+    
+    coldat = np.zeros([self.n+2, self.n+2, self.n+2, 4])
+    for index, x in np.ndenumerate(self.data):
+      coldat[index] = colours[x]
+    
     
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
-    ax.voxels(self.data, facecolors=col, edgecolors='grey')
+    ax.voxels(self.data, facecolors=coldat, edgecolors='grey')
     plt.show()
-
-dcube = Cube(None, 3)
-
-#dcube.transform(index=1, axis=0, dir=1)
-#print(dcube)
-#dcube.transform(index=1, axis=1, dir=1)
-#print(dcube)
-#dcube.transform(index=1, axis=2, dir=1)
-print(dcube)
-
-
-
-
-dcube.draw3()
 
 
 
