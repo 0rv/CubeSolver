@@ -19,9 +19,10 @@ def move(n, index):
     r_val = 1 if c_val//3 == 1 else -1
     return [n_val+1,a_val,r_val]
 def push(open_list, node):
-    heapq.heappush(open_list, (node['g_val'] + node['h_val'], node['h_val'], node['cube'], node))
+    safety = random.randint(1,9999)
+    heapq.heappush(open_list, (node['g_val'] + node['h_val'], node['h_val'], node['cube'].data.any() ,safety, node))
 def pop(open_list):
-    _, _, _, curr = heapq.heappop(open_list)
+    _, _, _, _, curr = heapq.heappop(open_list)
     return curr
 # basically a depth first search without a proper heuristic
 def IDAStar(cube):
@@ -56,17 +57,19 @@ def IDAStar(cube):
                 # create the states of the cubes
                 m = move(cube.n,i)
                 # trust that this is a deep copy otherwise it can lead to bugs
-                copy = Cube(currNode["cube"])
+                copy = Cube(currNode["cube"].data, cube.n)
+                # print(currNode['g_val'])
                 copy.transform(m[0],m[1],m[2])
                 node = {"cube": copy, "h_val": heuristic(cube), "g_val": \
                     currNode["g_val"] + 1, "transform": m}
                 if(node["h_val"]+node["g_val"]<=bound):
+                    print(len(successors))
                     push(successors,node)
                 elif(node["h_val"]+node["g_val"]<nextBound):
                     nextBound = node["h_val"]+node["g_val"]
             # I'm not sure if i should reverse this but reversing seems correct to me 
             # if it causes an error comment out or remove the reverse()
-            successors.reverse()
+            # successors.reverse()
             while(len(successors)!=0):
                 tnode = pop(successors)
                 node = {"cube": tnode["cube"],"g_val":tnode["g_val"],
@@ -90,17 +93,21 @@ def getPath(node):
 # transform(1,1) turns front face
 # transform(1,0) turns right face
 # transform(1,2) turns bottom face
-# cube = Cube(None)
+cube = Cube(None)
 # scramble(20,3,cube)
-# cube.transform(1,1,-1)
-
-# for i in range(18):
-#     print(move(3,i))
+cube.transform(1,1,-1)
+# m = [1,0,-1]
+print(getPath(IDAStar(cube)))
+for i in range(18):
+    print(move(3,i))
+path = getPath(IDAStar(cube))
+for i in path:
+    cube.transform(i[0],i[1],i[2])
 
         
 
 
 
-# cube.draw3()
+cube.draw3()
 
 

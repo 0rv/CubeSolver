@@ -41,7 +41,9 @@ class Cube:
       data[:,-1]    = np.pad(face*5, pad_width=1, mode='constant', constant_values=0) #D
       data[:,:,-1]  = np.pad(face*6, pad_width=1, mode='constant', constant_values=0) #R
       
-    self.data = data
+      self.data = data
+    else:
+      self.data = np.copy(data)
       # FIXME surely I can do this by going across axis 1:3???
       # doesnt need to be efficient, should only happen once per solve
       
