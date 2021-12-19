@@ -1,5 +1,4 @@
 from cube import Cube
-import heapq
 import random
 
 def scramble(i,n,cube):
@@ -19,10 +18,17 @@ def move(n, index):
     r_val = 1 if c_val//3 == 1 else -1
     return [n_val+1,a_val,r_val]
 def push(open_list, node):
-    safety = random.randint(1,9999)
-    heapq.heappush(open_list, (node['g_val'] + node['h_val'], node['h_val'], node['cube'].data.any() ,safety, node))
+    for i in open_list:
+        if(node['g_val'] + node['h_val'] == i[0]):
+            if( node['h_val']<i[1]):
+                open_list.insert((node['g_val'] + node['h_val'], node['h_val'],node), open_list.index(i))
+                return
+        elif(node['g_val'] + node['h_val'] < i[0]):
+            open_list.insert((node['g_val'] + node['h_val'], node['h_val'],node), open_list.index(i))
+            return
+    open_list.append((node['g_val'] + node['h_val'], node['h_val'],node))
 def pop(open_list):
-    _, _, _, _, curr = heapq.heappop(open_list)
+    _, _, curr = open_list.pop()
     return curr
 # basically a depth first search without a proper heuristic
 def IDAStar(cube):
@@ -63,7 +69,7 @@ def IDAStar(cube):
                 node = {"cube": copy, "h_val": heuristic(cube), "g_val": \
                     currNode["g_val"] + 1, "transform": m}
                 if(node["h_val"]+node["g_val"]<=bound):
-                    print(len(successors))
+                    # print(len(successors))
                     push(successors,node)
                 elif(node["h_val"]+node["g_val"]<nextBound):
                     nextBound = node["h_val"]+node["g_val"]
@@ -94,8 +100,8 @@ def getPath(node):
 # transform(1,0) turns right face
 # transform(1,2) turns bottom face
 cube = Cube(None)
-# scramble(20,3,cube)
-cube.transform(1,1,-1)
+scramble(5,3,cube)
+# cube.transform(1,1,-1)
 # m = [1,0,-1]
 print(getPath(IDAStar(cube)))
 for i in range(18):
