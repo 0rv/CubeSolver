@@ -30,21 +30,26 @@ def push(open_list, node):
 def pop(open_list):
     _, _, curr = open_list.pop()
     return curr
-# basically a depth first search without a proper heuristic
-def IDAStar(cube):
+# basically a depth first search without a proper heuristic for now
+# modified IDA* 
+def IDAStar(cube, limit = -1, start = None):
+    # limit set to an unreachable number by default
     # starting node
-    start = {
-        "cube": cube,
-        "g_val": 0,
-        "transform": None,
-        "parent": None
-    }
+    if start == None:
+        start = {
+            "cube": cube,
+            "g_val": 0,
+            "transform": None,
+            "parent": None,
+            "h_val": heuristic()
+        }
     successors = []
     nodeStack = []
     bound = 0
     nextBound = heuristic(cube)
     currCube = cube
-    while not currCube.solved():
+    solved = False
+    while not solved:
         # when nodestack is empty it means either it was just initialized or 
         # we return to the root after a branch doesnt have a solution within the bounds
         if len(nodeStack) == 0:
@@ -55,7 +60,10 @@ def IDAStar(cube):
         currNode = nodeStack.pop()
         currCube = currNode["cube"]
         # if it is bound check if the problem has been solved if it has then end 
-        # redundant to add a condition for the positive
+        if currCube.solved():
+            solved = True
+        elif currNode["h_val"] < limit:
+            solved = True
         # cannot be above bound by the nature of how elements were pushed
         if currNode["g_val"] != bound:
             # make all moves possible
@@ -75,13 +83,24 @@ def IDAStar(cube):
                     nextBound = node["h_val"]+node["g_val"]
             # I'm not sure if i should reverse this but reversing seems correct to me 
             # if it causes an error comment out or remove the reverse()
-            # successors.reverse()
+            successors.reverse()
             while(len(successors)!=0):
                 tnode = pop(successors)
                 node = {"cube": tnode["cube"],"g_val":tnode["g_val"],
-                    "transform": tnode["transform"],"parent":currNode}
+                    "transform": tnode["transform"],"parent":currNode, "h_val": tnode["h_val"]}
                 nodeStack.append(node)
     return currNode
+    
+# waiting on a proper heuristic
+def pseudoThistle(cube):
+    hLimit = heuristic*3/4
+    currNode = None
+    c1 = cube
+    while(hLimit>5):
+        if currNode!=None:
+            c1 = currNode["cube"]
+        currNode = IDAStar(c1, hLimit, currNode)
+    return IDAStar(currNode["cube"],-1,currNode)
 
 # get the path 
 def getPath(node):
