@@ -90,16 +90,17 @@ def IDAStar(cube, limit = -1, start = None):
                     "transform": tnode["transform"],"parent":currNode, "h_val": tnode["h_val"]}
                 nodeStack.append(node)
     return currNode
-    
+
 # waiting on a proper heuristic
 def pseudoThistle(cube):
-    hLimit = heuristic*3/4
+    hLimit = heuristic(cube)*3/4
     currNode = None
     c1 = cube
     while(hLimit>5):
         if currNode!=None:
             c1 = currNode["cube"]
         currNode = IDAStar(c1, hLimit, currNode)
+        hLimit*=3/4
     return IDAStar(currNode["cube"],-1,currNode)
 
 # get the path 
