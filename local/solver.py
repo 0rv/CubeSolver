@@ -1,4 +1,5 @@
 from cube import Cube
+from heuristic import purityHeur
 import random
 
 def scramble(i,n,cube):
@@ -10,7 +11,7 @@ def scramble(i,n,cube):
         cube.transform(r2,r1,r3)
 
 def heuristic(cube):
-    return 1
+    return purityHeur(cube)
 def move(n, index):
     n_val = index%n
     c_val = index//n
@@ -41,7 +42,7 @@ def IDAStar(cube, limit = -1, start = None):
             "g_val": 0,
             "transform": None,
             "parent": None,
-            "h_val": heuristic()
+            "h_val": heuristic(cube)
         }
     successors = []
     nodeStack = []
@@ -74,7 +75,7 @@ def IDAStar(cube, limit = -1, start = None):
                 copy = Cube(currNode["cube"].data, cube.n)
                 # print(currNode['g_val'])
                 copy.transform(m[0],m[1],m[2])
-                node = {"cube": copy, "h_val": heuristic(cube), "g_val": \
+                node = {"cube": copy, "h_val": heuristic(currCube), "g_val": \
                     currNode["g_val"] + 1, "transform": m}
                 if(node["h_val"]+node["g_val"]<=bound):
                     # print(len(successors))
@@ -123,10 +124,11 @@ cube = Cube(None)
 scramble(5,3,cube)
 # cube.transform(1,1,-1)
 # m = [1,0,-1]
-print(getPath(IDAStar(cube)))
+
+path = getPath(IDAStar(cube))
 for i in range(18):
     print(move(3,i))
-path = getPath(IDAStar(cube))
+print(path)
 for i in path:
     cube.transform(i[0],i[1],i[2])
 
