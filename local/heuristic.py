@@ -1,6 +1,6 @@
 from cube import Cube
 
-def heuristicFunction(heuristicFunc=exampleHeuristic,cubeState,weight=1):
+def heuristicFunction(heuristicFunc,cubeState,weight=1):
     return weight*heuristicFunc(cubeState)
 
 def exampleHeuristic(cubeState):
